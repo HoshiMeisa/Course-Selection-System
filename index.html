@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>选课系统</title>
+  <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+  <div id="loginForm">
+    <label for="username">学号:</label>
+    <input type="text" id="username" name="username">
+    <label for="password">密码:</label>
+    <input type="password" id="password" name="password">
+    <button onclick="login()">登录</button>
+  </div>
+  <table id="coursesTable" style="display: none;">
+    <thead>
+      <tr>
+        <th>课程编号</th>
+        <th>课程名称</th>
+        <th>学分</th>
+        <th>人数上限</th>
+        <th>授课教师</th>
+        <th>开课年级</th>
+        <th>上课地点</th>
+      </tr>
+    </thead>
+    <tbody id="coursesBody">
+    </tbody>
+  </table>
+  <script src="scripts.js"></script>
+</body>
+</html>

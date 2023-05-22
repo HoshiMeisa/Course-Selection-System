@@ -1,0 +1,12 @@
+{
+    "students": [
+      { "id": "001", "name": "张三", "major": "计算机科学", "grade": "大二", "password": "password" }
+    ],
+    "courses": [
+      { "id": "CS101", "name": "计算机基础", "credits": 3, "maxStudents": 30, "teacher": "李四", "grade": "大一", "location": "教室101" }
+    ],
+    "enrollments": [
+      { "studentId": "001", "courseId": "CS101" }
+    ]
+  }
+  
