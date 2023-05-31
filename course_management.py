@@ -65,3 +65,15 @@ class CourseSelection:
 
     def find_selections_by_student_name(self, student_name):
         return [(student, lab_course) for student, lab_course in self.selections if student.name == student_name]
+
+    # 在这里添加至少 5 个实验课程
+courses = [
+    LabCourse("C001", "工程实训初级", 2, 30, "张三", "大一", "人工智能实验室"),
+    LabCourse("C002", "工程实训中级", 2, 30, "李四", "大二", "大数据实验室"),
+    LabCourse("C003", "工程实训高级", 3, 30, "王五", "大三", "机器人实验室"),
+    LabCourse("C004", "面向对象编程", 3, 30, "赵六", "大一", "电子技术综合实验室"),
+    LabCourse("C005", "人工智能基础实验", 3, 30, "钱七", "大二-大三", "智能驾驶实验室"),
+    LabCourse("C006", "机器人实验", 3, 30, "孙八", "大二-大三", "人工智能实验室"),
+    LabCourse("C007", "云计算实验", 3, 30, "周九", "大二-大三", "大数据实验室"),
+    LabCourse("C008", "智能驾驶实验", 3, 30, "吴十", "大三", "智能驾驶实验室"),
+]
