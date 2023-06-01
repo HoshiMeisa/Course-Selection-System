@@ -2,11 +2,23 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>选课系统</title>
 </head>
 <body>
-<h1>欢迎来到选课系统</h1>
-<a href="{{ url_for('login') }}">登录</a>
+    <h1>欢迎使用选课系统</h1>
+    <form action="/login" method="post">
+        <label for="user_id">用户ID:</label>
+        <input type="text" name="user_id" required>
+        <br>
+        <label for="role">身份:</label>
+        <select name="role">
+            <option value="student">学生</option>
+            <option value="admin">管理员</option>
+        </select>
+        <br>
+        <input type="submit" value="登录">
+    </form>
 </body>
 </html>
