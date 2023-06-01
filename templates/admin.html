@@ -5,6 +5,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/static/styles.css">
     <title>选课系统 - 管理员端</title>
+        <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 1em;
+        }
+        .form-container {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1em;
+        }
+        .form-container form {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        input[type="submit"] {
+            width: 100%;
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -52,26 +83,33 @@
             </div>
             {% endfor %}
         </div>
-        <div class="admin-add-course">
-        <h2>添加课程</h2>
-            <form action="/admin_add_course" method="POST">
-                <label for="course_id">课程编号:</label>
-                <input type="text" id="course_id" name="course_id" required>
-                <label for="course_name">课程名称:</label>
-                <input type="text" id="course_name" name="course_name" required>
-                <input type="submit" value="添加课程">
-            </form>
-        </div>
+        <h1>管理课程</h1>
+        <div class="form-container">
+        <form method="post" action="{{ url_for('admin_add_course') }}">
+            <input type="text" name="course_id" placeholder="课程 ID" required>
+            <input type="text" name="course_name" placeholder="课程名称" required>
+            <input type="number" name="credits" placeholder="学分" required>
+            <input type="text" name="instructor" placeholder="授课教师" required>
+            <input type="number" name="capacity" placeholder="人数上限" required>
+            <input type="text" name="grade" placeholder="开课年级" required>
+            <input type="text" name="location" placeholder="上课地点" required>
+            <input type="submit" value="添加课程">
+        </form>
+        <form method="post" action="{{ url_for('admin_delete_course') }}">
+            <input type="text" name="course_name" placeholder="课程名称" required>
+            <input type="submit" value="删除课程">
+        </form>
+    </div>
 
-    <!-- Delete course form -->
-        <div class="admin-delete-course">
-            <h2>删除课程</h2>
-            <form action="/admin_delete_course" method="POST">
-                <label for="delete_course_id">课程编号:</label>
-                <input type="text" id="delete_course_id" name="course_id" required>
-                <input type="submit" value="删除课程">
-            </form>
-        </div>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul>
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
 
 
     </div>

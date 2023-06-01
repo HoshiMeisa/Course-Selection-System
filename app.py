@@ -120,32 +120,58 @@ def drop_course():
     else:
         return redirect(url_for('admin'))
 
+
 @app.route('/admin_add_course', methods=['POST'])
 def admin_add_course():
     course_id = request.form['course_id']
     course_name = request.form['course_name']
+    credits = int(request.form['credits'])
+    instructor = request.form['instructor']
+    capacity = int(request.form['capacity'])
+    grade = request.form['grade']
+    location = request.form['location']
 
     # Check if the course already exists
-    course = Course.query.filter_by(course_id=course_id).first()
-    if course:
+    existing_course = None
+    for course in courses.values():
+        if course['course_id'] == course_id:
+            existing_course = course
+            break
+
+    if existing_course:
         flash("课程已存在。")
     else:
-        new_course = Course(course_id=course_id, course_name=course_name)
-        db.session.add(new_course)
-        db.session.commit()
+        new_course = {
+            'course_id': course_id,
+            'course_name': course_name,
+            'credits': credits,
+            'instructor': instructor,
+            'capacity': capacity,
+            'grade': grade,
+            'location': location,
+            'students': []
+        }
+        courses[course_id] = new_course
+        save_courses('courses.json', courses)
         flash("课程已成功添加。")
 
     return redirect(url_for('admin'))
 
+
 @app.route('/admin_delete_course', methods=['POST'])
 def admin_delete_course():
-    course_id = request.form['course_id']
+    course_name = request.form['course_name']
 
     # Find the course and delete it
-    course = Course.query.filter_by(course_id=course_id).first()
-    if course:
-        db.session.delete(course)
-        db.session.commit()
+    course_to_delete = None
+    for course_key, course in courses.items():
+        if course['course_name'] == course_name:
+            course_to_delete = course_key
+            break
+
+    if course_to_delete:
+        del courses[course_to_delete]
+        save_courses('courses.json', courses)
         flash("课程已成功删除。")
     else:
         flash("课程未找到。")
