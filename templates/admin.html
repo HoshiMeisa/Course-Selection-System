@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/styles.css">
+    <title>选课系统 - 管理员端</title>
+</head>
+<body>
+    <div class="container">
+        <h1>欢迎 {{ session['username'] }}</h1>
+        <a href="{{ url_for('home') }}" class="return-button" style="display: flex; justify-content: center; align-items: center;">返回主页</a>
+
+        <div class="container">
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            <ul class="flash-messages">
+                {% for message in messages %}
+                <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            {% endwith %}
+        </div>
+
+        <div class="admin-container">
+            {% for student in students %}
+            <div class="admin-box">
+                <h3>{{ student }}</h3>
+                <table>
+                    <tr>
+                        <th>课程编号</th>
+                        <th>课程名称</th>
+                        <th></th>
+                    </tr>
+                    {% for course in courses %}
+                    {% if student in course.students %}
+                    <tr>
+                        <td>{{ course.course_id }}</td>
+                        <td>{{ course.course_name }}</td>
+                        <td>
+                            <form action="/admin_drop_course" method="POST">
+                                <input type="hidden" name="course_id" value="{{ course.course_id }}">
+                                <input type="hidden" name="student" value="{{ student }}">
+                                <input type="submit" value="退课">
+                            </form>
+                        </td>
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+                </table>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="admin-add-course">
+        <h2>添加课程</h2>
+            <form action="/admin_add_course" method="POST">
+                <label for="course_id">课程编号:</label>
+                <input type="text" id="course_id" name="course_id" required>
+                <label for="course_name">课程名称:</label>
+                <input type="text" id="course_name" name="course_name" required>
+                <input type="submit" value="添加课程">
+            </form>
+        </div>
+
+    <!-- Delete course form -->
+        <div class="admin-delete-course">
+            <h2>删除课程</h2>
+            <form action="/admin_delete_course" method="POST">
+                <label for="delete_course_id">课程编号:</label>
+                <input type="text" id="delete_course_id" name="course_id" required>
+                <input type="submit" value="删除课程">
+            </form>
+        </div>
+
+
+    </div>
+</body>
+</html>

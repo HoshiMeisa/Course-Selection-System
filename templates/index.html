@@ -2,23 +2,37 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>选课系统</title>
+    <link rel="stylesheet" href="/static/styles.css">
+    <title>选课系统 - 首页</title>
 </head>
 <body>
-    <h1>欢迎使用选课系统</h1>
-    <form action="/login" method="post">
-        <label for="user_id">用户ID:</label>
-        <input type="text" name="user_id" required>
-        <br>
-        <label for="role">身份:</label>
-        <select name="role">
-            <option value="student">学生</option>
-            <option value="admin">管理员</option>
-        </select>
-        <br>
-        <input type="submit" value="登录">
-    </form>
+    <div class="container">
+        <h1>选课系统</h1>
+        <div class="login-form">
+
+            <form action="/login" method="POST">
+                <label for="user_type">请选择身份:</label>
+                <select name="user_type" id="user_type">
+                    <option value="student">学生</option>
+                    <option value="admin">管理员</option>
+                </select>
+                <label for="username">用户名:</label>
+                <input type="text" id="username" name="username" required>
+                <label for="password">密码:</label>
+                <input type="password" id="password" name="password" required>
+                <input type="submit" value="登录">
+            </form>
+        </div>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul class="flash-messages">
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
+    </div>
 </body>
 </html>
