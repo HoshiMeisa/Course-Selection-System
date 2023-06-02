@@ -9,21 +9,30 @@
 <body>
     <div class="container">
         <h1>选课系统</h1>
-        <div class="login-form">
 
-            <form action="/login" method="POST">
-                <label for="user_type">请选择身份:</label>
-                <select name="user_type" id="user_type">
-                    <option value="student">学生</option>
-                    <option value="admin">管理员</option>
-                </select>
-                <label for="username">用户名:</label>
-                <input type="text" id="username" name="username" required>
-                <label for="password">密码:</label>
-                <input type="password" id="password" name="password" required>
-                <input type="submit" value="登录">
-            </form>
-        </div>
+            <div class="login-form">
+
+                <form action="/login" method="POST">
+                        <div class="form-group">
+                                <label for="user_type">请选择身份:</label>
+                                <select name="user_type" id="user_type">
+                                    <option value="student">学生</option>
+                                    <option value="admin">管理员</option>
+                                </select>
+                            <div class="form-group">
+                                <label for="username">用户名:</label>
+                                <input type="text" id="username" name="username" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="password">密码:</label>
+                                <input type="password" id="password" name="password" required>
+                            </div>
+                        </div>
+                    <input type="submit" value="登录">
+                </form>
+
+            </div>
+
         {% with messages = get_flashed_messages() %}
         {% if messages %}
         <ul class="flash-messages">

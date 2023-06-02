@@ -5,42 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/static/styles.css">
     <title>选课系统 - 管理员端</title>
-        <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 1em;
-        }
-        .form-container {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 1em;
-        }
-        .form-container form {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-        }
-        input[type="submit"] {
-            width: 100%;
-            background-color: #4CAF50;
-            color: white;
-            padding: 10px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-        input[type="submit"]:hover {
-            background-color: #45a049;
-        }
-    </style>
 </head>
 <body>
     <div class="container">
         <h1>欢迎 {{ session['username'] }}</h1>
-        <a href="{{ url_for('home') }}" class="return-button" style="display: flex; justify-content: center; align-items: center;">返回主页</a>
+        <a href="{{ url_for('home') }}" class="return-button">返回主页</a>
 
         <div class="container">
             {% with messages = get_flashed_messages() %}
@@ -58,60 +27,52 @@
             {% for student in students %}
             <div class="admin-box">
                 <h3>{{ student }}</h3>
-                <table>
-                    <tr>
-                        <th>课程编号</th>
-                        <th>课程名称</th>
-                        <th></th>
-                    </tr>
-                    {% for course in courses %}
-                    {% if student in course.students %}
-                    <tr>
-                        <td>{{ course.course_id }}</td>
-                        <td>{{ course.course_name }}</td>
-                        <td>
-                            <form action="/admin_drop_course" method="POST">
-                                <input type="hidden" name="course_id" value="{{ course.course_id }}">
-                                <input type="hidden" name="student" value="{{ student }}">
-                                <input type="submit" value="退课">
-                            </form>
-                        </td>
-                    </tr>
-                    {% endif %}
-                    {% endfor %}
+                <table class="course-table">
+                    <thead>
+                        <tr>
+                            <th>课程编号</th>
+                            <th>课程名称</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for course in courses %}
+                        {% if student in course.students %}
+                        <tr>
+                            <td>{{ course.course_id }}</td>
+                            <td>{{ course.course_name }}</td>
+                            <td>
+                                <form action="/admin_drop_course" method="POST">
+                                    <input type="hidden" name="course_id" value="{{ course.course_id }}">
+                                    <input type="hidden" name="student" value="{{ student }}">
+                                    <input type="submit" value="退课">
+                                </form>
+                            </td>
+                        </tr>
+                        {% endif %}
+                        {% endfor %}
+                    </tbody>
                 </table>
             </div>
             {% endfor %}
         </div>
         <h1>管理课程</h1>
         <div class="form-container">
-        <form method="post" action="{{ url_for('admin_add_course') }}">
-            <input type="text" name="course_id" placeholder="课程 ID" required>
-            <input type="text" name="course_name" placeholder="课程名称" required>
-            <input type="number" name="credits" placeholder="学分" required>
-            <input type="text" name="instructor" placeholder="授课教师" required>
-            <input type="number" name="capacity" placeholder="人数上限" required>
-            <input type="text" name="grade" placeholder="开课年级" required>
-            <input type="text" name="location" placeholder="上课地点" required>
-            <input type="submit" value="添加课程">
-        </form>
-        <form method="post" action="{{ url_for('admin_delete_course') }}">
-            <input type="text" name="course_name" placeholder="课程名称" required>
-            <input type="submit" value="删除课程">
-        </form>
-    </div>
-
-    {% with messages = get_flashed_messages() %}
-        {% if messages %}
-            <ul>
-                {% for message in messages %}
-                    <li>{{ message }}</li>
-                {% endfor %}
-            </ul>
-        {% endif %}
-    {% endwith %}
-
-
+            <form method="post" action="{{ url_for('admin_add_course') }}" class="course-form">
+                <input type="text" name="course_id" placeholder="课程 ID" required>
+                <input type="text" name="course_name" placeholder="课程名称" required>
+                <input type="number" name="credits" placeholder="学分" required>
+                <input type="text" name="instructor" placeholder="授课教师" required>
+                <input type="number" name="capacity" placeholder="人数上限" required>
+                <input type="text" name="grade" placeholder="开课年级" required>
+                <input type="text" name="location" placeholder="上课地点" required>
+                <input type="submit" value="添加课程">
+            </form>
+            <form method="post" action="{{ url_for('admin_delete_course') }}" class="course-form">
+                <input type="text" name="course_name" placeholder="课程名称" required>
+                <input type="submit" value="删除课程">
+            </form>
+        </div>
     </div>
 </body>
 </html>

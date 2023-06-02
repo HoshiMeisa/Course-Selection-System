@@ -7,79 +7,86 @@
     <title>选课系统 - 学生端</title>
 </head>
 <body>
-    <h1>欢迎 {{ session['username'] }}</h1>
-    <a href="{{ url_for('home') }}" class="return-button" style="display: flex; justify-content: center; align-items: center;">返回主页</a>
-    <h2>课程列表</h2>
-
     <div class="container">
-    {% with messages = get_flashed_messages() %}
-    {% if messages %}
-    <ul class="flash-messages">
-        {% for message in messages %}
-        <li>{{ message }}</li>
-        {% endfor %}
-    </ul>
-    {% endif %}
-    {% endwith %}
+        <h1>欢迎 {{ session['username'] }}</h1>
+        <a href="{{ url_for('home') }}" class="return-button">返回主页</a>
+        <h2>课程列表</h2>
+
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul class="flash-messages">
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
+
+        <table class="course-table">
+            <thead>
+                <tr>
+                    <th>课程编号</th>
+                    <th>课程名称</th>
+                    <th>学分</th>
+                    <th>授课教师</th>
+                    <th>人数上限</th>
+                    <th>开课年级</th>
+                    <th>上课地点</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for course in courses %}
+                <tr>
+                    <td>{{ course.course_id }}</td>
+                    <td>{{ course.course_name }}</td>
+                    <td>{{ course.credits }}</td>
+                    <td>{{ course.instructor }}</td>
+                    <td>{{ course.capacity }}</td>
+                    <td>{{ course.grade }}</td>
+                    <td>{{ course.location }}</td>
+                    <td>
+                        <form action="/register_course" method="POST">
+                            <input type="hidden" name="course_id" value="{{ course.course_id }}">
+                            <input type="submit" value="选课">
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <h2>已选课程</h2>
+        <table class="course-table">
+            <thead>
+                <tr>
+                    <th>课程编号</th>
+                    <th>课程名称</th>
+                    <th>学分</th>
+                    <th>授课教师</th>
+                    <th>开课年级</th>
+                    <th>上课地点</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for course in registered_courses %}
+                <tr>
+                    <td>{{ course.course_id }}</td>
+                    <td>{{ course.course_name }}</td>
+                    <td>{{ course.credits }}</td>
+                    <td>{{ course.instructor }}</td>
+                    <td>{{ course.grade }}</td>
+                    <td>{{ course.location }}</td>
+                    <td>
+                        <form action="/drop_course" method="POST">
+                            <input type="hidden" name="course_id" value="{{ course.course_id }}">
+                            <input type="submit" value="退课">
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
-
-    <table>
-        <tr>
-            <th>课程编号</th>
-            <th>课程名称</th>
-            <th>学分</th>
-            <th>授课教师</th>
-            <th>人数上限</th>
-            <th>开课年级</th>
-            <th>上课地点</th>
-            <th></th>
-        </tr>
-        {% for course in courses %}
-        <tr>
-            <td>{{ course.course_id }}</td>
-            <td>{{ course.course_name }}</td>
-            <td>{{ course.credits }}</td>
-            <td>{{ course.instructor }}</td>
-            <td>{{ course.capacity }}</td>
-            <td>{{ course.grade }}</td>
-            <td>{{ course.location }}</td>
-            <td>
-                <form action="/register_course" method="POST">
-                    <input type="hidden" name="course_id" value="{{ course.course_id }}">
-                    <input type="submit" value="选课">
-                </form>
-            </td>
-        </tr>
-        {% endfor %}
-    </table>
-    <h2>已选课程</h2>
-    <table>
-        <tr>
-            <th>课程编号</th>
-            <th>课程名称</th>
-            <th>学分</th>
-            <th>授课教师</th>
-            <th>开课年级</th>
-            <th>上课地点</th>
-            <th></th>
-        </tr>
-        {% for course in registered_courses %}
-        <tr>
-            <td>{{ course.course_id }}</td>
-            <td>{{ course.course_name }}</td>
-            <td>{{ course.credits }}</td>
-            <td>{{ course.instructor }}</td>
-            <td>{{ course.grade }}</td>
-            <td>{{ course.location }}</td>
-            <td>
-                <form action="/drop_course" method="POST">
-                    <input type="hidden" name="course_id" value="{{ course.course_id }}">
-                    <input type="submit" value="退课">
-                </form>
-            </td>
-        </tr>
-        {% endfor %}
-    </table>
-
 </body>
 </html>
