@@ -5,30 +5,36 @@ from flask import Flask, render_template, request, redirect, url_for, flash, ses
 app = Flask(__name__)
 app.secret_key = 'some_secret_key'
 
+
 # 从文件中加载用户凭据（学生和管理员）
 def load_credentials(filename):
     with open(filename, 'r') as f:
         return json.load(f)
+
 
 # 从文件中加载课程
 def load_courses(filename):
     with open(filename, 'r') as f:
         return json.load(f)
 
+
 # 将课程保存到文件
 def save_courses(filename, courses):
     with open(filename, 'w') as f:
         json.dump(courses, f)
+
 
 # 加载学生和管理员凭据，以及课程
 students = load_credentials('students.json')
 admins = load_credentials('admins.json')
 courses = load_courses('courses.json')
 
+
 # 主页路由
 @app.route('/')
 def home():
     return render_template('index.html')
+
 
 # 登录路由，处理用户登录
 @app.route('/login', methods=['POST'])
@@ -52,6 +58,7 @@ def login():
     flash('无效的用户名或密码，请重试。')
     return redirect(url_for('home'))
 
+
 # 学生页面路由
 @app.route('/student')
 def student():
@@ -60,12 +67,14 @@ def student():
     registered_courses = [course for course in courses.values() if session['username'] in course['students']]
     return render_template('student.html', courses=courses.values(), registered_courses=registered_courses)
 
+
 # 管理员页面路由
 @app.route('/admin')
 def admin():
     if 'username' not in session or session['user_type'] != 'admin':
         return redirect(url_for('home'))
     return render_template('admin.html', students=students.keys(), courses=courses.values())
+
 
 # 管理员退课路由
 @app.route('/admin_drop_course', methods=['POST'])
@@ -82,6 +91,7 @@ def admin_drop_course():
                 flash(f"学生 {student} 未选该课程，无法退课: {course['course_name']}")
 
     return redirect(url_for('admin'))
+
 
 # 选课路由
 @app.route('/register_course', methods=['POST'])
@@ -104,6 +114,7 @@ def register_course():
     else:
         return redirect(url_for('admin'))
 
+
 # 退课路由
 @app.route('/drop_course', methods=['POST'])
 def drop_course():
@@ -121,6 +132,7 @@ def drop_course():
         return redirect(url_for('student'))
     else:
         return redirect(url_for('admin'))
+
 
 # 管理员添加课程路由
 @app.route('/admin_add_course', methods=['POST'])
@@ -159,6 +171,7 @@ def admin_add_course():
 
     return redirect(url_for('admin'))
 
+
 # 管理员删除课程路由
 @app.route('/admin_delete_course', methods=['POST'])
 def admin_delete_course():
@@ -179,6 +192,7 @@ def admin_delete_course():
         flash("课程未找到。")
 
     return redirect(url_for('admin'))
+
 
 # 启动 Flask 应用
 if __name__ == '__main__':
