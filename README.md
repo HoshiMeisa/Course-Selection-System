@@ -1,3 +1,3 @@
 # Course Selection System
 
-这是一个基于HTML、CSS和Flask的选课管理系统，为实验课大作业，同时用于人工智能学院的实验课选课。
+This is a course management system based on HTML, CSS, and Flask, serving as a major project for laboratory courses and also used for course selection in the Artificial Intelligence School's lab classes.
